@@ -1,0 +1,24 @@
+DASHBOARD INTERACTIVO · HOJA DE COSTOS
+
+Abre index (3).html en un navegador actualizado. No requiere instalación ni conexión a internet.
+
+Incluye:
+- Estilo oscuro compartido por ambos dashboards, con fondo carbón, paneles azul noche y acentos violeta y celeste.
+- Botón superior para abrir el dashboard de punto de equilibrio del archivo Punto_de_Equilibrio (1).xlsx.
+- Un botón superior de acceso a la segunda pantalla; los accesos rápidos laterales fueron eliminados.
+- Tema oscuro unificado, con paneles azul noche, fondo carbón y acentos violeta y celeste.
+- Diseño adaptable a pantallas de computador y celular; las tablas se pueden desplazar sin ampliar la página.
+- Tipografía sans serif Inter / Montserrat / Helvetica para una interfaz financiera limpia.
+- Indicadores y secciones que aparecen progresivamente al desplazarse; cifras y barras se animan al entrar en pantalla.
+- Las filas de las tablas se desvanecen progresivamente al entrar en pantalla; cambiar de categoría anima la salida y entrada de la tabla.
+- Las animaciones respetan la preferencia del sistema para reducir movimiento.
+- Tarjetas KPI y gráficos interactivos que llevan al detalle filtrado.
+- Búsqueda, filtros por categoría, ordenamiento y filas expandibles.
+- Lista de materiales por unidad separada del costo consolidado de producción.
+- La tabla cambia sus columnas según la categoría: materiales, mano de obra, CIF o resumen completo.
+- Cada botón de categoría abre la tabla, limpia la búsqueda anterior y muestra todos los registros de ese grupo.
+- Datos actualizados desde “Hoja_de_Costos (1) 2 (1).xlsx”: CIF $65.000, total $9.922.600 y costo unitario $3.307.533,33.
+
+Los datos del archivo de Excel no se modifican.
+
+Abre punto-de-equilibrio.html para el dashboard de rentabilidad. Los datos actualizados desde “Punto_de_Equilibrio (2).xlsx” registran costos fijos mensuales de $2.700.000, costo variable unitario de $5.404.200 y precio de venta de $6.500.000. El margen de contribución es positivo ($1.095.800) y el punto de equilibrio es 2,46 unidades. El simulador permite cambiar el precio y las unidades; el gráfico distingue los costos fijos, los costos totales y los ingresos.

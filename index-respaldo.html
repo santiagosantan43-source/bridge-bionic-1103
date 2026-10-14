@@ -1,0 +1,1045 @@
+<!DOCTYPE html>
+index.html<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bridge Bionics - Interpretador de Lenguaje de Señas</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@900&family=Playfair+Display:ital,wght@1,400;1,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+
+    <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.5.0/model-viewer.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- Firebase -->
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+      import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-analytics.js";
+      
+      const firebaseConfig = {
+        apiKey: "AIzaSyDdWgvOqokCGt0aY1vJBHva_i1SUfuRyYY",
+        authDomain: "bridged-bionics.firebaseapp.com",
+        projectId: "bridged-bionics",
+        storageBucket: "bridged-bionics.firebasestorage.app",
+        messagingSenderId: "1016605457823",
+        appId: "1:1016605457823:web:9434f170bfeb8605f891aa",
+        measurementId: "G-HKBFZT2010"
+      };
+      
+      const app = initializeApp(firebaseConfig);
+      const analytics = getAnalytics(app);
+    </script>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        darkBg: '#060302',
+                        terracotta: '#bd623c',
+                        copperDark: '#4e2513',
+                        cream: '#f2ded0',
+                        mutedBrown: '#b29d90',
+                        paleSky: '#C9E0EB',
+                        dustyDenim: '#A9BED3',
+                        deepLilac: '#8350C4',
+                        midnightViolet: '#402B47',
+                        shadowGrey: '#262423',
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-shadowGrey text-paleSky antialiased select-none overflow-x-hidden" style="background: linear-gradient(135deg, #262423 0%, #1a1918 100%);">
+
+    <nav class="fixed top-0 left-0 w-full h-20 bg-shadowGrey/80 backdrop-blur-xl border-b border-deepLilac/20 z-50 flex items-center justify-between px-2 xl:px-16 transition-all duration-300">
+        <div id="brandControl" class="brand-control">
+            <button id="teamToggle" type="button" class="brand-mark font-space-grotesk text-lg font-bold tracking-widest text-paleSky" aria-haspopup="dialog" aria-expanded="false" aria-controls="teamPopover">
+                BRIDGE <span class="text-deepLilac font-space-grotesk font-bold">BIONICS</span>
+            </button>
+            <div id="teamPopover" class="team-popover" role="dialog" aria-modal="true" aria-labelledby="teamPopoverTitle">
+                <button id="teamClose" type="button" class="team-close" aria-label="Cerrar ficha del equipo">
+                    <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                        <path d="m6 6 12 12M18 6 6 18"></path>
+                    </svg>
+                </button>
+                <h2 id="teamPopoverTitle" class="team-popover-title">Ficha técnica del equipo</h2>
+                <div class="ficha-tecnica">
+                    <div class="integrante-card">
+                        <img src="images/perfil-placeholder.svg" alt="Avatar de Juan David Lagos Abondano" class="foto-perfil">
+                        <h4>Juan David Lagos Abondano</h4>
+                        <p>Programador y diseñador web</p>
+                    </div>
+                    <div class="integrante-card">
+                        <img src="images/perfil-placeholder.svg" alt="Avatar de Anderson Santiago Santana Paiva" class="foto-perfil">
+                        <h4>Anderson Santiago Santana Paiva</h4>
+                        <p>Programador</p>
+                    </div>
+                    <div class="integrante-card">
+                        <img src="images/perfil-placeholder.svg" alt="Avatar de Leydy Yurani Rodriguez Santana" class="foto-perfil">
+                        <h4>Leydy Yurani Rodriguez Santana</h4>
+                        <p>Técnica de ensamblaje</p>
+                    </div>
+                    <div class="integrante-card">
+                        <img src="images/perfil-placeholder.svg" alt="Avatar de Nashly Mariana Ardila Orosco" class="foto-perfil">
+                        <h4>Nashly Mariana Ardila Orosco</h4>
+                        <p>Gestora de proyecto</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <button id="mobileMenuToggle" type="button" class="mobile-menu-toggle" aria-label="Abrir menú" aria-expanded="false" aria-controls="primaryNavigation">
+            <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                <path d="M4 6h16M4 12h16M4 18h16"></path>
+            </svg>
+        </button>
+        <ul id="primaryNavigation" class="hidden md:flex gap-6 text-sm tracking-[0.25em] uppercase font-bold text-paleSky items-center">
+            <li><a href="#inicio" class="nav-link hover:text-deepLilac transition-all duration-300 hover:scale-110">Inicio</a></li>
+            <li><a href="#analisis" class="nav-link hover:text-deepLilac transition-all duration-300 hover:scale-110">Análisis</a></li>
+            <li><a href="#bitacora-viaje" class="nav-link hover:text-deepLilac transition-all duration-300 hover:scale-110">Bitácora</a></li>
+            <li><a href="#diagrama-interactivo" class="nav-link hover:text-deepLilac transition-all duration-300 hover:scale-110">Circuito</a></li>
+            <li><a href="#acceso-dashboard" class="nav-link hover:text-deepLilac transition-all duration-300 hover:scale-110">Dashboard</a></li>
+            <li><a href="#reconocer-letra" class="nav-link hover:text-deepLilac transition-all duration-300 hover:scale-110">IA LSC</a></li>
+            <li><a href="#aplicacion" class="nav-link hover:text-deepLilac transition-all duration-300 hover:scale-110">Aplicación</a></li>
+            <li><button onclick="openLoginModal()" class="px-4 py-2 bg-deepLilac text-shadowGrey font-bold rounded-lg hover:bg-opacity-90 transition-all duration-300 hover:scale-105">Ingreso</button></li>
+        </ul>
+    </nav>
+
+    <section id="inicio" class="relative h-screen w-full flex items-center justify-center border-b border-deepLilac/20 overflow-hidden">
+        <div class="absolute inset-0 w-full h-full z-10">
+            <model-viewer
+                src="prueba-plata.glb"
+                alt="Estructura Mecánica Cyber Hand"
+                camera-controls
+                auto-rotate
+                environment-image="neutral"
+                tone-mapping="neutral"
+                rotation-per-second="12deg"
+                interaction-prompt="none"
+                camera-orbit="25deg 75deg 105%"
+                field-of-view="26deg"
+                style="width: 100%; height: 100%; --poster-color: transparent;">
+            </model-viewer>
+        </div>
+
+        <div id="hero-text" class="relative z-20 max-w-2xl text-center px-8 transform transition-all duration-100 ease-out">
+            <span class="block text-[9px] tracking-[0.4em] uppercase font-space-grotesk font-bold text-deepLilac mb-4 glow-text">Ecosistema IoT de Alta Fidelidad</span>
+            <h1 class="font-space-grotesk text-6xl md:text-7xl font-bold leading-none tracking-wide text-paleSky mb-6">
+                Bridge <span class="text-deepLilac glow-text">Bionics</span>
+            </h1>
+            <p id="hero-description" class="font-light text-xs text-dustyDenim leading-[1.9] tracking-wider glow-text description-hover">
+                Una interfaz robótica de vanguardia diseñada bajo un ecosistema automatizado para interpretar y emular las variantes mecánicas del Lenguaje de Señas Colombiano (LSC), uniendo el control de microcontroladores con capas operacionales.
+            </p>
+        </div>
+        
+        <div class="absolute right-12 bottom-0 top-0 w-[1px] bg-deepLilac/10 hidden md:block"></div>
+    </section>
+
+    <section id="proposito-integral" aria-label="El propósito detrás de Bridge Bionics">
+        <div class="proposito-circuit" aria-hidden="true">
+            <span class="circuit-line circuit-line-horizontal circuit-line-horizontal-one"></span>
+            <span class="circuit-line circuit-line-horizontal circuit-line-horizontal-two"></span>
+            <span class="circuit-line circuit-line-horizontal circuit-line-horizontal-three"></span>
+            <span class="circuit-line circuit-line-vertical circuit-line-vertical-one"></span>
+            <span class="circuit-line circuit-line-vertical circuit-line-vertical-two"></span>
+        </div>
+
+        <div class="proposito-copy" aria-label="El propósito detrás de Bridge Bionics">
+            <h2 class="texto-fluido layer-1 outline-serif">EL</h2>
+            <h2 class="texto-fluido layer-2 solido-sans">PROPÓSITO</h2>
+            <h2 class="texto-fluido layer-3 outline-serif">DETRÁS DE</h2>
+            <h2 class="texto-fluido layer-4 acento-sans">BRIDGE BIONICS</h2>
+        </div>
+
+        <div class="proposito-carousel">
+            <div class="swiper proposito-swiper" aria-label="Tarjetas informativas del proyecto">
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide">
+                        <article class="card-info">
+                            <h3>Traducción Tangible</h3>
+                            <p>Bridge Bionics materializa lo digital. Es un sistema ciberfísico que traduce entradas digitales estrictamente al alfabeto de la LSC en tiempo real a través de una mano biónica impresa en 3D. El usuario interactúa en la web y el dispositivo ejecuta configuraciones anatómicamente precisas, transformando el aprendizaje en una experiencia tridimensional.</p>
+                        </article>
+                    </div>
+                    <div class="swiper-slide">
+                        <article class="card-info">
+                            <h3>La Barrera Comunicativa</h3>
+                            <p>En Colombia existe una profunda brecha de comunicación entre las personas oyentes y la comunidad sorda. Las herramientas actuales para aprender la Lengua de Señas Colombiana (LSC) se limitan a pantallas planas en 2D (videos o imágenes), careciendo de la interacción física y espacial necesaria para un aprendizaje autónomo, inmersivo y efectivo.</p>
+                        </article>
+                    </div>
+                    <div class="swiper-slide">
+                        <article class="card-info">
+                            <h3>Impacto Social</h3>
+                            <p>Diseñado para beneficiar directamente a familiares de personas sordas y a personas oyentes que desean aprender LSC. Además, sirve como una potente herramienta didáctica para instituciones educativas (como el IED Bolívar), fomentando la inclusión desde las aulas y apoyando indirectamente a la comunidad sorda al expandir su círculo de comunicación.</p>
+                        </article>
+                    </div>
+                    <div class="swiper-slide">
+                        <article class="card-info">
+                            <h3>Innovación IoT</h3>
+                            <p>Su mayor fortaleza radica en su arquitectura tecnológica. No es un circuito analógico aislado; utiliza un microcontrolador ESP32 y un controlador PCA9685 por I2C para conectarse a la red. Es una solución altamente escalable, de bajo costo de hardware y representa una intersección perfecta entre desarrollo web (Full-Stack), modelado 3D y telecomunicaciones.</p>
+                        </article>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="analisis" class="py-28 px-8 md:px-24 border-b border-deepLilac/20 bg-shadowGrey">
+        <div class="max-w-7xl mx-auto">
+            <div class="mb-10 border-b border-deepLilac/20 pb-8">
+                <div>
+                    <h2 class="font-space-grotesk text-4xl font-bold tracking-widest text-paleSky">Análisis <span class="text-deepLilac">(Encuesta, tablas y gráficas)</span></h2>
+                </div>
+            </div>
+
+            <div class="market-carousel-viewport" aria-label="Carrusel continuo con todas las gráficas de la encuesta">
+                <div class="market-carousel-track" id="marketChartsTrack">
+                    <div class="market-carousel-set" aria-label="Gráficas de la encuesta"></div>
+                    <div class="market-carousel-set" aria-hidden="true"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="bitacora-viaje" aria-label="Bitácora de viaje Bridge Bionics">
+        <div class="bitacora-layout">
+            <div class="contenedor-titulo-bitacora">
+                <h2>BITÁCORA<br>DE VIAJE</h2>
+                <h3>BRIDGE BIONICS</h3>
+            </div>
+            <div class="viewport-doble-cascada" aria-label="Galería fotográfica de Bridge Bionics">
+                <div class="pista-sube">
+                    <div class="pista-secuencia">
+                        <img src="./imagenes/1.jpg" alt="Registro de viaje 1" data-photo-index="1" tabindex="0" role="button">
+                        <img src="./imagenes/2.jpg" alt="Registro de viaje 2" data-photo-index="2" tabindex="0" role="button">
+                        <img src="./imagenes/3.jpg" alt="Registro de viaje 3" data-photo-index="3" tabindex="0" role="button">
+                        <img src="./imagenes/4.jpg" alt="Registro de viaje 4" data-photo-index="4" tabindex="0" role="button">
+                        <img src="./imagenes/5.jpg" alt="Registro de viaje 5" data-photo-index="5" tabindex="0" role="button">
+                        <img src="./imagenes/6.jpg" alt="Registro de viaje 6" data-photo-index="6" tabindex="0" role="button">
+                        <img src="./imagenes/7.jpg" alt="Registro de viaje 7" data-photo-index="7" tabindex="0" role="button">
+                        <img src="./imagenes/8.jpg" alt="Registro de viaje 8" data-photo-index="8" tabindex="0" role="button">
+                        <img src="./imagenes/9.jpg" alt="Registro de viaje 9" data-photo-index="9" tabindex="0" role="button">
+                        <img src="./imagenes/10.jpg" alt="Registro de viaje 10" data-photo-index="10" tabindex="0" role="button">
+                        <video src="./imagenes/bridge-bionics-app.mp4" aria-label="Video de la bitácora 1" controls playsinline preload="metadata"></video>
+                    </div>
+                    <div class="pista-secuencia pista-secuencia-duplicada" aria-hidden="true">
+                        <img src="./imagenes/1.jpg" alt="" data-photo-index="1">
+                        <img src="./imagenes/2.jpg" alt="" data-photo-index="2">
+                        <img src="./imagenes/3.jpg" alt="" data-photo-index="3">
+                        <img src="./imagenes/4.jpg" alt="" data-photo-index="4">
+                        <img src="./imagenes/5.jpg" alt="" data-photo-index="5">
+                        <img src="./imagenes/6.jpg" alt="" data-photo-index="6">
+                        <img src="./imagenes/7.jpg" alt="" data-photo-index="7">
+                        <img src="./imagenes/8.jpg" alt="" data-photo-index="8">
+                        <img src="./imagenes/9.jpg" alt="" data-photo-index="9">
+                        <img src="./imagenes/10.jpg" alt="" data-photo-index="10">
+                        <video src="./imagenes/bridge-bionics-app.mp4" aria-label="Video de la bitácora 1" controls playsinline preload="metadata" tabindex="-1"></video>
+                    </div>
+                </div>
+                <div class="pista-baja">
+                    <div class="pista-secuencia">
+                        <img src="./imagenes/11.jpg" alt="Registro de viaje 11" data-photo-index="11" tabindex="0" role="button">
+                        <img src="./imagenes/12.jpg" alt="Registro de viaje 12" data-photo-index="12" tabindex="0" role="button">
+                        <img src="./imagenes/13.jpg" alt="Registro de viaje 13" data-photo-index="13" tabindex="0" role="button">
+                        <img src="./imagenes/14.jpg" alt="Registro de viaje 14" data-photo-index="14" tabindex="0" role="button">
+                        <img src="./imagenes/15.jpg" alt="Registro de viaje 15" data-photo-index="15" tabindex="0" role="button">
+                        <img src="./imagenes/16.jpg" alt="Registro de viaje 16" data-photo-index="16" tabindex="0" role="button">
+                        <img src="./imagenes/17.jpg" alt="Registro de viaje 17" data-photo-index="17" tabindex="0" role="button">
+                        <img src="./imagenes/18.jpg" alt="Registro de viaje 18" data-photo-index="18" tabindex="0" role="button">
+                        <img src="./imagenes/19.jpg" alt="Registro de viaje 19" data-photo-index="19" tabindex="0" role="button">
+                        <img src="./imagenes/20.jpg" alt="Registro de viaje 20" data-photo-index="20" tabindex="0" role="button">
+                        <video src="./imagenes/bridge-bionics-app.mp4" aria-label="Video de la bitácora 2" controls playsinline preload="metadata"></video>
+                    </div>
+                    <div class="pista-secuencia pista-secuencia-duplicada" aria-hidden="true">
+                        <img src="./imagenes/11.jpg" alt="" data-photo-index="11">
+                        <img src="./imagenes/12.jpg" alt="" data-photo-index="12">
+                        <img src="./imagenes/13.jpg" alt="" data-photo-index="13">
+                        <img src="./imagenes/14.jpg" alt="" data-photo-index="14">
+                        <img src="./imagenes/15.jpg" alt="" data-photo-index="15">
+                        <img src="./imagenes/16.jpg" alt="" data-photo-index="16">
+                        <img src="./imagenes/17.jpg" alt="" data-photo-index="17">
+                        <img src="./imagenes/18.jpg" alt="" data-photo-index="18">
+                        <img src="./imagenes/19.jpg" alt="" data-photo-index="19">
+                        <img src="./imagenes/20.jpg" alt="" data-photo-index="20">
+                        <video src="./imagenes/bridge-bionics-app.mp4" aria-label="Video de la bitácora 2" controls playsinline preload="metadata" tabindex="-1"></video>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div id="bitacoraLightbox" class="lightbox-overlay" role="dialog" aria-modal="true" aria-label="Fotografía ampliada" aria-hidden="true">
+        <button type="button" class="lightbox-close" aria-label="Cerrar fotografía">&times;</button>
+        <img id="img-lightbox" class="lightbox-image" alt="">
+    </div>
+
+    <section id="diagrama-interactivo" aria-labelledby="diagrama-titulo">
+        <div class="diagrama-contenido">
+            <header class="diagrama-encabezado">
+                <span>INTEGRACIÓN DE HARDWARE</span>
+                <h2 id="diagrama-titulo">Diagrama <strong>de conexiones</strong></h2>
+                <p>Arquitectura de alimentación, comunicación I2C y control PWM del sistema.</p>
+            </header>
+
+            <div class="lienzo-circuito" aria-label="Diagrama de conexiones del sistema Bridge Bionics">
+                <svg class="circuito-cables circuito-cables-escritorio" viewBox="0 0 1000 1000" preserveAspectRatio="none" aria-hidden="true">
+                    <path class="cable-rojo" d="M130 80 V30 H484 M516 30 H821 V80"></path>
+                    <path class="cable-negro" d="M150 80 V55 H829 V80"></path>
+                    <path class="cable-usb" d="M205 820 H245 V500 H320"></path>
+                    <path class="cable-senal" d="M400 370 V280 H610 V110 H710"></path>
+                    <path class="cable-rojo" d="M430 370 V265 H638 V140 H710"></path>
+                    <path class="cable-negro" d="M460 370 V250 H666 V170 H710"></path>
+                    <path class="cable-senal" d="M490 370 V235 H694 V200 H710"></path>
+                    <path class="cable-pwm" d="M720 210 L642 397"></path>
+                    <path class="cable-pwm" d="M740 210 L684 397"></path>
+                    <path class="cable-pwm" d="M760 210 L726 397"></path>
+                    <path class="cable-pwm" d="M775 210 L770 397"></path>
+                    <path class="cable-pwm" d="M790 210 L785 397"></path>
+                    <path class="cable-pwm" d="M805 210 L801 397"></path>
+                    <path class="cable-pwm" d="M820 210 L816 397"></path>
+                    <path class="cable-pwm" d="M835 210 L832 397"></path>
+                    <path class="cable-pwm" d="M850 210 L847 397"></path>
+                    <path class="cable-pwm" d="M865 210 L863 397"></path>
+                    <path class="cable-pwm" d="M880 210 L878 397"></path>
+                    <path class="cable-pwm" d="M895 210 L894 397"></path>
+                    <path class="cable-pwm" d="M910 210 L909 397"></path>
+                    <path class="cable-pwm" d="M925 210 L925 397"></path>
+                    <path class="cable-pwm" d="M940 210 L940 397"></path>
+                    <path class="cable-rojo" d="M445 525 V610 H655 V800 H700"></path>
+                    <path class="cable-negro" d="M430 525 V625 H640 V820 H700"></path>
+                    <path class="cable-senal" d="M415 525 V640 H625 V840 H700"></path>
+                    <path class="cable-senal" d="M400 525 V655 H610 V860 H700"></path>
+                    <g class="componente-fusible" role="group" aria-label="Fusible en serie con la alimentación de los servos">
+                        <rect class="fusible-cuerpo" x="484" y="14" width="32" height="32" rx="3"></rect>
+                        <g class="fusible-informacion" aria-hidden="true">
+                            <rect class="fusible-panel" x="526" y="4" width="260" height="68" rx="6"></rect>
+                            <text class="fusible-titulo" x="540" y="22">FUSIBLE · PROTECCIÓN</text>
+                            <text class="fusible-descripcion" x="540" y="39">Abre el circuito ante sobrecorriente o</text>
+                            <text class="fusible-descripcion" x="540" y="54">cortocircuito en la alimentación de servos.</text>
+                        </g>
+                    </g>
+                </svg>
+
+                <svg class="circuito-cables circuito-cables-movil" viewBox="0 0 400 1600" preserveAspectRatio="none" aria-hidden="true">
+                    <path class="cable-rojo" d="M190 176 V190 H228 M252 190 H294 V224"></path>
+                    <path class="cable-negro" d="M210 176 V205 H302 V224"></path>
+                    <path class="cable-usb" d="M80 1420 H20 V570 H104"></path>
+                    <path class="cable-senal" d="M140 512 V250 H201"></path>
+                    <path class="cable-rojo" d="M160 512 V280 H201"></path>
+                    <path class="cable-negro" d="M180 512 V310 H201"></path>
+                    <path class="cable-senal" d="M200 512 V340 H201"></path>
+                    <path class="cable-pwm" d="M214 352 L52 769"></path>
+                    <path class="cable-pwm" d="M224 352 L98 769"></path>
+                    <path class="cable-pwm" d="M234 352 L144 769"></path>
+                    <path class="cable-pwm" d="M244 352 L182 769"></path>
+                    <path class="cable-pwm" d="M254 352 L197 769"></path>
+                    <path class="cable-pwm" d="M264 352 L212 769"></path>
+                    <path class="cable-pwm" d="M274 352 L228 769"></path>
+                    <path class="cable-pwm" d="M284 352 L243 769"></path>
+                    <path class="cable-pwm" d="M294 352 L258 769"></path>
+                    <path class="cable-pwm" d="M304 352 L274 769"></path>
+                    <path class="cable-pwm" d="M314 352 L289 769"></path>
+                    <path class="cable-pwm" d="M324 352 L304 769"></path>
+                    <path class="cable-pwm" d="M334 352 L320 769"></path>
+                    <path class="cable-pwm" d="M344 352 L335 769"></path>
+                    <path class="cable-pwm" d="M354 352 L350 769"></path>
+                    <path class="cable-rojo" d="M225 630 V1232 H64"></path>
+                    <path class="cable-negro" d="M210 630 V1252 H64"></path>
+                    <path class="cable-senal" d="M195 630 V1272 H64"></path>
+                    <path class="cable-senal" d="M180 630 V1292 H64"></path>
+                    <g class="componente-fusible" tabindex="0" role="group" aria-label="Fusible en serie con la alimentación de los servos">
+                        <title>Fusible de protección: interrumpe la alimentación si una sobrecorriente o un cortocircuito supera su valor nominal y protege el cableado y el circuito de los servos.</title>
+                        <rect class="fusible-cuerpo" x="228" y="178" width="24" height="24" rx="3"></rect>
+                        <g class="fusible-informacion" aria-hidden="true">
+                            <rect class="fusible-panel" x="526" y="4" width="260" height="68" rx="6"></rect>
+                            <text class="fusible-titulo" x="540" y="22">FUSIBLE · PROTECCIÓN</text>
+                            <text class="fusible-descripcion" x="540" y="39">Abre el circuito ante sobrecorriente o</text>
+                            <text class="fusible-descripcion" x="540" y="54">cortocircuito en la alimentación de servos.</text>
+                        </g>
+                    </g>
+                </svg>
+                <div class="iot-conexion" aria-label="Conexión inalámbrica IoT">
+                    <svg class="iot-icono-wifi" viewBox="0 0 80 80" aria-hidden="true">
+                        <path class="wifi-onda wifi-onda-externa" d="M 66 29 A 14 14 0 0 0 66 51"></path>
+                        <path class="wifi-onda wifi-onda-media" d="M 66 22 A 21 21 0 0 0 66 58"></path>
+                        <path class="wifi-onda wifi-onda-interna" d="M 66 15 A 28 28 0 0 0 66 65"></path>
+                        <circle class="wifi-punto" cx="73" cy="40" r="3.5"></circle>
+                    </svg>
+                    <div class="iot-tooltip" role="tooltip">
+                        <span>CONEXIÓN INALÁMBRICA · IoT</span>
+                        <strong>Una red para conectar el sistema</strong>
+                        <p>El ESP32 crea una red Wi‑Fi local y actúa como nodo IoT para comunicar la mano biónica con la página web y la aplicación móvil. Así se pueden enviar instrucciones y recibir información del sistema sin cables de datos.</p>
+                    </div>
+                </div>
+                <div class="cable-info-tooltip" role="tooltip" aria-hidden="true"></div>
+
+                <div class="nodo" id="fuente-poder" tabindex="0" role="group" aria-label="Fuente de poder, especificaciones al enfocar">
+                    <span class="nodo-etiqueta">ALIMENTACIÓN EXTERNA · V+ / GND</span>
+                    <svg class="fuente-icono" viewBox="0 0 64 64" aria-hidden="true">
+                        <path d="M22 8v12M42 8v12M16 20h32v30H16z"></path>
+                        <path d="M32 26 24 38h7l-3 10 12-15h-8l4-7z"></path>
+                        <path d="M8 35h8M48 35h8"></path>
+                    </svg>
+                    <h4>Fuente externa 5 V</h4>
+                    <div class="nodo-especificaciones"><p><strong>Fuente externa · 5 V / 10 A</strong><br>Conecta V+ y GND a la entrada de alimentación del PCA9685 para suministrar corriente a los servos. Une el GND de la fuente con el GND del ESP32 para compartir referencia; el cable USB alimenta la placa.</p></div>
+                </div>
+                <div class="nodo" id="placa-expansion" role="group" aria-label="ESP32 con placa de expansión shield">
+                    <model-viewer
+                        id="modelo-esp32"
+                        src="./esp32.glb"
+                        alt="Modelo tridimensional del ESP32 integrado en el bloque central del circuito"
+                        bounds="tight"
+                        camera-orbit="205deg 22.5deg 65%"
+                        camera-target="auto"
+                        orientation="0deg 0deg -65deg"
+                        shadow-intensity="1"
+                        environment-image="neutral"
+                        interaction-prompt="none"
+                        tabindex="0"
+                        aria-label="Modelo ESP32 en posición horizontal. Pulsa Enter o haz clic para iniciar el giro y activar los controles."
+                        aria-expanded="false">
+                    </model-viewer>
+                </div>
+                <div class="nodo" id="modulo-pca9685" tabindex="0" role="group" aria-label="Módulo PCA9685, especificaciones al enfocar">
+                    <span class="nodo-etiqueta">PWM / POWER IN</span>
+                    <h4>Módulo PCA9685</h4>
+                    <model-viewer
+                        id="modelo-pca9685"
+                        class="componente-modelo-3d"
+                        src="./Modulo%20PCA9685.glb"
+                        alt="Modelo tridimensional del módulo PCA9685"
+                        bounds="tight"
+                        camera-orbit="180deg 8deg 63.24m"
+                        min-camera-orbit="auto auto 0m"
+                        orientation="0deg 0deg 0deg"
+                        shadow-intensity="1"
+                        environment-image="neutral"
+                        interaction-prompt="none"
+                        tabindex="0"
+                        aria-label="Módulo PCA9685 estático. Pulsa Enter o haz clic para explorar.">
+                    </model-viewer>
+                    <div class="nodo-especificaciones"><p><strong>Módulo PCA9685</strong><br>Controlador PWM de 16 canales. Recibe energía de la fuente y señales I2C del shield.</p></div>
+                </div>
+                <div class="bloque-servos" role="group" aria-label="Grupo de servos conectado al PCA9685">
+                    <div class="nodo" id="servo-mg996r" tabindex="0" role="group" aria-label="Servo MG996R controlado por el PCA9685">
+                        <div class="swiper servo-mg996r-carrusel" id="carrusel-mg996r" role="group" aria-label="Carrusel de los tres servos MG996R">
+                            <div class="swiper-wrapper">
+                                <div class="swiper-slide servo-mg996r-slide" aria-label="Servo MG996R 1 de 3">
+                                    <model-viewer
+                                        id="modelo-mg996r-1"
+                                        class="servo-modelo-3d componente-modelo-3d"
+                                        src="./servo%20MG996R.glb"
+                                        alt="Modelo tridimensional del servo MG996R, unidad 1 de 3"
+                                        bounds="tight"
+                                        camera-orbit="180deg 8deg 75%"
+                                        orientation="0deg 0deg 90deg"
+                                        shadow-intensity="1"
+                                        environment-image="neutral"
+                                        interaction-prompt="none"
+                                        tabindex="0"
+                                        aria-label="Servo MG996R 1 de 3 estático. Pulsa Enter o haz clic para explorar.">
+                                    </model-viewer>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="nodo-especificaciones"><p><strong>Servo MG996R</strong><br>Servo de alto torque controlado mediante una salida PWM del PCA9685.</p></div>
+                    </div>
+                    <div class="nodo" id="servos-sg90" tabindex="0" role="group" aria-label="Doce servos SG90 controlados por el PCA9685">
+                        <div class="swiper servo-sg90-carrusel" id="carrusel-sg90" role="group" aria-label="Carrusel de los doce servos SG90">
+                            <div class="swiper-wrapper">
+                                <div class="swiper-slide servo-sg90-slide" aria-label="Servo SG90 1 de 12">
+                                    <model-viewer
+                                        id="modelo-sg90-1"
+                                        class="servo-modelo-3d componente-modelo-3d"
+                                        src="./servo%20sg90.glb"
+                                        alt="Modelo tridimensional del servo SG90, unidad 1 de 12"
+                                        bounds="tight"
+                                        camera-orbit="180deg 8deg 75%"
+                                        orientation="0deg 0deg 90deg"
+                                        shadow-intensity="1"
+                                        environment-image="neutral"
+                                        interaction-prompt="none"
+                                        tabindex="0"
+                                        aria-label="Servo SG90 1 de 12 estático. Pulsa Enter o haz clic para explorar.">
+                                    </model-viewer>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="nodo-especificaciones"><p><strong>Servos SG90</strong><br>12 servos conectados a las doce salidas PWM restantes del PCA9685.</p></div>
+                    </div>
+                </div>
+                <div class="nodo" id="pantalla-lcd" tabindex="0" role="group" aria-label="Pantalla LCD, especificaciones al enfocar">
+                    <span class="nodo-etiqueta">DISPLAY / I2C</span>
+                    <h4>Pantalla LCD</h4>
+                    <model-viewer
+                        id="modelo-lcd"
+                        class="componente-modelo-3d"
+                        src="./Pantalla%20LCD.glb"
+                        alt="Modelo tridimensional de la pantalla LCD"
+                        bounds="tight"
+                        camera-orbit="205deg 22.5deg 69.77m"
+                        min-camera-orbit="auto auto 0m"
+                        orientation="0deg 0deg 206deg"
+                        shadow-intensity="1"
+                        environment-image="neutral"
+                        interaction-prompt="none"
+                        tabindex="0"
+                        aria-label="Pantalla LCD estática. Pulsa Enter o haz clic para explorar.">
+                    </model-viewer>
+                    <div class="nodo-especificaciones"><p><strong>Pantalla LCD</strong><br>Recibe alimentación y comunicación I2C desde las conexiones del shield.</p></div>
+                </div>
+                <div class="nodo" id="cargador-usb" tabindex="0" role="group" aria-label="Cargador USB conectado a la placa shield, especificaciones al enfocar">
+                    <span class="nodo-etiqueta">ALIMENTACIÓN DEL SHIELD</span>
+                    <svg class="cargador-visual" viewBox="0 0 120 72" aria-hidden="true">
+                        <path class="cargador-cable" d="M52 48 C52 64 76 64 76 48"></path>
+                        <rect class="cargador-cuerpo" x="34" y="8" width="50" height="42" rx="8"></rect>
+                        <path class="cargador-pines" d="M47 8V1M71 8V1"></path>
+                        <rect class="cargador-puerto" x="53" y="39" width="12" height="4" rx="2"></rect>
+                        <path class="cargador-indicador" d="m58 17-6 9h7l-3 7 12-12h-7l3-4z"></path>
+                    </svg>
+                    <h4>Cargador USB 5V</h4>
+                    <div class="nodo-especificaciones"><p><strong>Cargador USB 5V</strong><br>Adaptador conectado a la placa shield para alimentar el conjunto ESP32-shield.</p></div>
+                </div>
+                <div class="esp32-especificaciones" id="esp32-especificaciones" aria-hidden="true" inert>
+                    <aside class="esp32-especificacion-card esp32-detalle-card">
+                        <span>01 / MICROCONTROLADOR</span>
+                        <h3>ESP32 DevKit</h3>
+                        <p>Es el cerebro del sistema: procesa las instrucciones y se comunica con los módulos conectados mediante sus pines GPIO.</p>
+                        <ul>
+                            <li>Procesador de doble núcleo con Wi-Fi y Bluetooth</li>
+                            <li>Bus I2C: SDA y SCL hacia el PCA9685 y la pantalla LCD</li>
+                            <li>Recibe alimentación desde la placa shield</li>
+                        </ul>
+                    </aside>
+                    <aside class="esp32-especificacion-card esp32-detalle-card">
+                        <span>02 / PLACA DE EXPANSIÓN</span>
+                        <h3>Shield para ESP32</h3>
+                        <p>El DevKit se conecta directamente a sus headers. El shield facilita el cableado y lleva alimentación y señales a los módulos del circuito.</p>
+                        <ul>
+                            <li>Entrada USB de 5 V para alimentar el conjunto</li>
+                            <li>Conexiones I2C al PCA9685 y a la pantalla LCD</li>
+                            <li>La fuente externa alimenta por separado los servos</li>
+                        </ul>
+                    </aside>
+                    <aside class="esp32-especificacion-card servo-especificacion-card" data-servo-especificacion="mg996r">
+                        <span>SERVO DE ALTO TORQUE</span>
+                        <h3>MG996R</h3>
+                        <p>Servo de alto torque para movimientos que requieren mayor fuerza. Controlado desde una salida PWM del PCA9685.</p>
+                        <ul>
+                            <li>Señal de control PWM</li>
+                            <li>Alimentación externa para el servo</li>
+                            <li>Conectado al canal asignado del driver</li>
+                        </ul>
+                    </aside>
+                    <aside class="esp32-especificacion-card servo-especificacion-card" data-servo-especificacion="sg90">
+                        <span>GRUPO DE SERVOS</span>
+                        <h3>SG90</h3>
+                        <p>Grupo de 12 servos SG90 controlados individualmente a través de las salidas PWM del PCA9685.</p>
+                        <ul>
+                            <li>12 canales PWM dedicados</li>
+                            <li>Control desde el driver PCA9685</li>
+                            <li>Alimentación externa para los servos</li>
+                        </ul>
+                    </aside>
+                    <aside class="esp32-especificacion-card servo-especificacion-card" data-servo-especificacion="pca9685">
+                        <span>CONTROL PWM</span>
+                        <h3>Driver PCA9685</h3>
+                        <p>Controlador de 16 canales que recibe las señales I2C del ESP32 y genera salidas PWM independientes.</p>
+                        <ul>
+                            <li>16 canales de salida PWM</li>
+                            <li>Comunicación I2C por SDA y SCL</li>
+                            <li>Fuente externa para alimentar servos</li>
+                        </ul>
+                    </aside>
+                    <aside class="esp32-especificacion-card servo-especificacion-card" data-servo-especificacion="lcd">
+                        <span>PANTALLA / I2C</span>
+                        <h3>Pantalla LCD</h3>
+                        <p>Display del sistema conectado al ESP32 mediante el bus I2C para mostrar información de estado.</p>
+                        <ul>
+                            <li>Comunicación por SDA y SCL</li>
+                            <li>Alimentación desde la placa</li>
+                            <li>Visualización de información del sistema</li>
+                        </ul>
+                    </aside>
+                </div>
+            </div>
+            <div class="circuito-leyenda" aria-label="Leyenda de conexiones">
+                <span><i class="leyenda-vcc"></i>VCC</span>
+                <span><i class="leyenda-gnd"></i>GND</span>
+                <span><i class="leyenda-i2c"></i>I2C / SDA-SCL</span>
+                <span><i class="leyenda-pwm"></i>PWM</span>
+                <span><i class="leyenda-usb"></i>USB ESP32</span>
+                <span><i class="leyenda-shield"></i>ESP32 / Shield</span>
+            </div>
+        </div>
+    </section>
+
+    <section id="acceso-dashboard" aria-label="Acceso al dashboard financiero">
+        <div class="dash-layout">
+            <div class="dash-titulo-container">
+                <h2>DASHBOARD</h2>
+                <h3>DE BRIDGE BIONICS</h3>
+            </div>
+            <div class="dash-textos-flotantes" aria-label="Análisis financiero y control operativo">
+                <p class="dash-texto-uno">Análisis financiero y operativo en tiempo real.</p>
+                <p class="dash-texto-dos">Control de costos, materiales y punto de equilibrio.</p>
+            </div>
+            <div class="dash-boton-container">
+                <a class="dash-boton" href="./Dashboard_Hoja_de_Costo/index%20(3).html" aria-label="Abrir dashboard financiero">
+                    <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M4 12h15M13 5l7 7-7 7"></path>
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <section id="reconocer-letra" class="py-28 px-8 md:px-24 border-b border-deepLilac/20 bg-shadowGrey" aria-labelledby="reconocer-letra-titulo">
+        <div class="max-w-7xl mx-auto">
+            <div class="max-w-5xl mx-auto text-center mb-12">
+                <span class="block text-[9px] tracking-[0.4em] uppercase font-space-grotesk font-bold text-deepLilac mb-3">Interpretación LSC</span>
+                <h2 id="reconocer-letra-titulo" class="font-space-grotesk text-4xl font-bold tracking-widest text-paleSky">Reconocer <span class="text-deepLilac">letra</span></h2>
+                <p class="mt-4 text-sm text-dustyDenim">Activa la cámara y muestra una letra del alfabeto de Lengua de Señas Colombiana.</p>
+            </div>
+
+            <div class="grid gap-6 lg:grid-cols-[minmax(0,1.5fr)_minmax(18rem,0.8fr)] items-stretch">
+                <div class="glass-card p-4 md:p-6">
+                    <div class="recognition-camera-frame">
+                        <video id="recognitionVideo" class="recognition-video" autoplay muted playsinline aria-label="Vista de la cámara para reconocer señas"></video>
+                        <div id="recognitionPlaceholder" class="recognition-camera-placeholder">
+                            <span class="text-[10px] tracking-[0.25em] uppercase font-space-grotesk font-bold text-dustyDenim">La cámara está apagada</span>
+                        </div>
+                    </div>
+                    <div class="mt-5 flex flex-wrap justify-center gap-3">
+                        <button id="recognitionStart" type="button" class="px-6 py-3 bg-deepLilac text-shadowGrey font-bold rounded-lg hover:bg-opacity-90 transition-all duration-300 uppercase tracking-[0.15em] text-xs">
+                            Activar cámara
+                        </button>
+                        <button id="recognitionStop" type="button" class="px-6 py-3 border border-deepLilac/50 text-paleSky font-bold rounded-lg hover:border-deepLilac transition-all duration-300 uppercase tracking-[0.15em] text-xs" disabled>
+                            Detener
+                        </button>
+                    </div>
+                </div>
+
+                <div class="glass-card p-8 flex flex-col justify-center text-center">
+                    <span class="block text-[9px] tracking-[0.3em] uppercase font-space-grotesk font-bold text-deepLilac mb-4">Resultado en tiempo real</span>
+                    <p class="text-xs uppercase tracking-[0.15em] text-dustyDenim">Letra reconocida</p>
+                    <output id="recognitionLetter" class="recognition-letter" aria-live="polite">—</output>
+                    <p id="recognitionConfidence" class="text-sm text-paleSky">Confianza: —</p>
+                    <p id="recognitionStatus" class="mt-6 text-xs text-dustyDenim" role="status" aria-live="polite">Cámara apagada</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="aplicacion" class="py-28 border-b border-deepLilac/20 overflow-hidden bg-shadowGrey">
+        <div class="max-w-5xl mx-auto text-center mb-16 px-8">
+            <span class="block text-[9px] tracking-[0.4em] uppercase font-space-grotesk font-bold text-deepLilac mb-3">Interfaz Digital</span>
+            <h2 class="font-space-grotesk text-4xl font-bold tracking-widest text-paleSky"><span class="text-deepLilac">Aplicación</span></h2>
+        </div>
+        
+        <div class="flex justify-center px-8">
+            <div class="max-w-2xl w-full" id="appCardsContainer">
+               
+            </div>
+        </div>
+    </section>
+
+    <footer class="py-12 bg-[#0f0e0d] border-t border-deepLilac/20 text-center text-[9px] tracking-[0.3em] uppercase text-dustyDenim">
+        &copy; 2026 Bridge Bionics — Elevando la Accesibilidad Universal mediante Ecosistemas IoT. | Creado por Juan David Lagos Abondano - 1103
+    </footer>
+
+    <div id="loginModal" class="fixed inset-0 bg-shadowGrey/95 backdrop-blur-md z-50 hidden overflow-y-auto flex items-center justify-center">
+        <div class="glass-card w-full max-w-md p-8 relative border border-deepLilac/30 rounded-lg m-4">
+            <button onclick="closeLoginModal()" class="absolute top-4 right-4 text-paleSky hover:text-deepLilac transition-colors">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </button>
+            
+            <h3 class="font-space-grotesk text-2xl font-bold text-deepLilac mb-6 text-center">Iniciar Sesión</h3>
+            
+            <form id="loginForm" onsubmit="handleLogin(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs tracking-[0.2em] uppercase font-space-grotesk font-bold text-paleSky mb-2">Correo</label>
+                    <input type="email" id="loginEmail" required class="w-full px-4 py-3 bg-midnightViolet border border-deepLilac/50 rounded text-paleSky placeholder-dustyDenim focus:outline-none focus:border-deepLilac transition-colors" placeholder="tu@email.com">
+                </div>
+                
+                <div>
+                    <label class="block text-xs tracking-[0.2em] uppercase font-space-grotesk font-bold text-paleSky mb-2">Contraseña</label>
+                    <input type="password" id="loginPassword" required class="w-full px-4 py-3 bg-midnightViolet border border-deepLilac/50 rounded text-paleSky placeholder-dustyDenim focus:outline-none focus:border-deepLilac transition-colors" placeholder="••••••••">
+                </div>
+                
+                <div id="loginError" class="text-red-400 text-xs hidden"></div>
+                
+                <button type="submit" class="w-full mt-6 py-3 bg-deepLilac text-shadowGrey font-bold rounded-lg hover:bg-opacity-90 transition-all duration-300 uppercase tracking-[0.2em] text-sm">Ingresar</button>
+            </form>
+            
+            <p class="text-center text-dustyDenim text-xs mt-4">¿No tienes cuenta? <span style="cursor: pointer;" class="text-deepLilac font-bold hover:underline">Regístrate aquí</span></p>
+        </div>
+    </div>
+
+    
+    <div id="tabPanel" class="fixed inset-0 bg-shadowGrey/95 backdrop-blur-md z-50 hidden overflow-y-auto">
+        <div class="min-h-screen flex items-center justify-center p-4">
+            <div class="glass-card w-full max-w-4xl relative max-h-[90vh] overflow-y-auto border border-deepLilac/30">
+                <button onclick="closeTabPanel()" class="sticky top-4 right-4 float-right text-paleSky hover:text-deepLilac transition-colors">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+
+                <div class="flex gap-4 mb-8 border-b border-deepLilac/20 p-8">
+                    <button onclick="switchTab('generalidades')" class="tab-btn active text-xs tracking-[0.2em] uppercase font-space-grotesk font-bold pb-2 border-b-2 border-deepLilac text-paleSky">
+                        
+                    </button>
+                    <button onclick="switchTab('mercados')" class="tab-btn text-xs tracking-[0.2em] uppercase font-space-grotesk font-bold pb-2 text-dustyDenim hover:text-paleSky">
+                        
+                    </button>
+                </div>
+
+                <div class="p-8">
+                    <div id="tab-generalidades" class="tab-content">
+                        <iframe src="generalidades del proyecto.pdf" class="w-full h-[600px] border border-deepLilac/20 rounded"></iframe>
+                    </div>
+                    <div id="tab-mercados" class="tab-content hidden">
+                        <iframe src="estudio de mercados.pdf" class="w-full h-[600px] border border-deepLilac/20 rounded"></iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="firebase.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script src="animations.js"></script>
+    <script src="main.js"></script>
+    <script src="reconocimiento-web.js"></script>
+    <script>
+        (() => {
+            const model = document.getElementById('modelo-esp32');
+            const details = document.getElementById('esp32-especificaciones');
+            const circuitCanvas = document.querySelector('#diagrama-interactivo .lienzo-circuito');
+            if (!model || !details || !circuitCanvas) return;
+            const cableTooltip = circuitCanvas.querySelector('.cable-info-tooltip');
+            const cableDescriptions = [
+                { className: 'cable-rojo', description: 'VCC · Alimentación positiva de 5 V hacia el circuito y los servos.' },
+                { className: 'cable-negro', description: 'GND · Tierra o retorno eléctrico; comparte referencia entre la fuente y el ESP32.' },
+                { className: 'cable-senal', description: 'Señal de comunicación I2C (SDA/SCL) o control entre el ESP32 y los módulos.' },
+                { className: 'cable-pwm', description: 'Señal PWM · El PCA9685 envía pulsos de control a cada servo.' },
+                { className: 'cable-usb', description: 'USB · Alimentación y conexión del ESP32 con el equipo de programación.' },
+                { className: 'cable-shield', description: 'Conexión de la placa shield · Distribuye alimentación y señales entre el ESP32 y los módulos.' }
+            ];
+            const cablePathFromTarget = (target) => {
+                if (!(target instanceof Element)) return null;
+                const path = target.closest('path[class*="cable-"]');
+                return path && circuitCanvas.contains(path) ? path : null;
+            };
+            const getCableDescription = (path) => cableDescriptions.find((entry) => path.classList.contains(entry.className))?.description;
+            const positionCableTooltip = (event) => {
+                if (!cableTooltip) return;
+                const bounds = circuitCanvas.getBoundingClientRect();
+                const left = Math.max(12, Math.min(event.clientX - bounds.left + 14, bounds.width - cableTooltip.offsetWidth - 12));
+                const top = Math.max(12, Math.min(event.clientY - bounds.top + 14, bounds.height - cableTooltip.offsetHeight - 12));
+                cableTooltip.style.left = `${left}px`;
+                cableTooltip.style.top = `${top}px`;
+            };
+            circuitCanvas.querySelectorAll('.circuito-cables path[class*="cable-"]').forEach((path) => {
+                const description = getCableDescription(path);
+                if (!description) return;
+                const title = document.createElementNS('http://www.w3.org/2000/svg', 'title');
+                title.textContent = description;
+                path.prepend(title);
+                const hitTarget = path.cloneNode(false);
+                hitTarget.classList.add('cable-hit-target');
+                hitTarget.setAttribute('aria-hidden', 'true');
+                hitTarget.setAttribute('stroke', 'transparent');
+                hitTarget.setAttribute('stroke-width', '18');
+                hitTarget.setAttribute('stroke-dasharray', 'none');
+                hitTarget.setAttribute('pointer-events', 'stroke');
+                path.after(hitTarget);
+            });
+            circuitCanvas.addEventListener('pointerover', (event) => {
+                const path = cablePathFromTarget(event.target);
+                const description = path && getCableDescription(path);
+                if (!description || !cableTooltip) return;
+                cableTooltip.textContent = description;
+                cableTooltip.dataset.visible = 'true';
+                cableTooltip.setAttribute('aria-hidden', 'false');
+                positionCableTooltip(event);
+            });
+            circuitCanvas.addEventListener('pointermove', (event) => {
+                if (cableTooltip?.dataset.visible === 'true') positionCableTooltip(event);
+            });
+            circuitCanvas.addEventListener('pointerout', (event) => {
+                const fromPath = cablePathFromTarget(event.target);
+                const toPath = cablePathFromTarget(event.relatedTarget);
+                if (!fromPath || fromPath === toPath || !cableTooltip) return;
+                delete cableTooltip.dataset.visible;
+                cableTooltip.setAttribute('aria-hidden', 'true');
+            });
+            const sg90CarouselElement = document.getElementById('carrusel-sg90');
+            const sg90Wrapper = sg90CarouselElement?.querySelector('.swiper-wrapper');
+            const firstSG90Model = sg90Wrapper?.querySelector('model-viewer');
+            const mg996rCarouselElement = document.getElementById('carrusel-mg996r');
+            const mg996rWrapper = mg996rCarouselElement?.querySelector('.swiper-wrapper');
+            const firstMG996RModel = mg996rWrapper?.querySelector('model-viewer');
+            if (mg996rWrapper && firstMG996RModel) {
+                for (let index = 2; index <= 3; index += 1) {
+                    const slide = document.createElement('div');
+                    slide.className = 'swiper-slide servo-mg996r-slide';
+                    slide.setAttribute('aria-label', `Servo MG996R ${index} de 3`);
+                    const duplicate = firstMG996RModel.cloneNode(true);
+                    duplicate.id = `modelo-mg996r-${index}`;
+                    duplicate.setAttribute('loading', 'lazy');
+                    duplicate.setAttribute('alt', `Modelo tridimensional del servo MG996R, unidad ${index} de 3`);
+                    duplicate.setAttribute('aria-label', `Servo MG996R ${index} de 3 estático. Pulsa Enter o haz clic para explorar.`);
+                    slide.appendChild(duplicate);
+                    mg996rWrapper.appendChild(slide);
+                }
+            }
+            const mg996rSwiper = window.Swiper && mg996rCarouselElement
+                ? new window.Swiper(mg996rCarouselElement, {
+                    slidesPerView: 1,
+                    centeredSlides: true,
+                    spaceBetween: 0,
+                    speed: 1800,
+                    grabCursor: true,
+                    slideToClickedSlide: true
+                })
+                : null;
+            let mg996rDirection = 1;
+            let mg996rTimer = null;
+            const startMG996RAutoplay = () => {
+                if (!mg996rSwiper || mg996rTimer !== null) return;
+                mg996rTimer = window.setInterval(() => {
+                    if (mg996rSwiper.isEnd) mg996rDirection = -1;
+                    else if (mg996rSwiper.isBeginning) mg996rDirection = 1;
+                    mg996rSwiper.slideTo(mg996rSwiper.activeIndex + mg996rDirection);
+                }, 2400);
+            };
+            const stopMG996RAutoplay = () => {
+                if (mg996rTimer === null) return;
+                window.clearInterval(mg996rTimer);
+                mg996rTimer = null;
+            };
+            startMG996RAutoplay();
+            if (sg90Wrapper && firstSG90Model) {
+                for (let index = 2; index <= 12; index += 1) {
+                    const slide = document.createElement('div');
+                    slide.className = 'swiper-slide servo-sg90-slide';
+                    slide.setAttribute('aria-label', `Servo SG90 ${index} de 12`);
+                    const duplicate = firstSG90Model.cloneNode(true);
+                    duplicate.id = `modelo-sg90-${index}`;
+                    duplicate.setAttribute('loading', 'lazy');
+                    duplicate.setAttribute('alt', `Modelo tridimensional del servo SG90, unidad ${index} de 12`);
+                    duplicate.setAttribute('aria-label', `Servo SG90 ${index} de 12 estático. Pulsa Enter o haz clic para explorar.`);
+                    slide.appendChild(duplicate);
+                    sg90Wrapper.appendChild(slide);
+                }
+            }
+            const sg90Swiper = window.Swiper && sg90CarouselElement
+                ? new window.Swiper(sg90CarouselElement, {
+                    slidesPerView: 1.6,
+                    centeredSlides: true,
+                    spaceBetween: 0,
+                    loop: true,
+                    speed: 5000,
+                    grabCursor: true,
+                    slideToClickedSlide: false,
+                    autoplay: {
+                        delay: 0,
+                        disableOnInteraction: false,
+                        pauseOnMouseEnter: false
+                    }
+                })
+                : null;
+            const componentModels = [
+                ...Array.from(mg996rWrapper?.querySelectorAll('model-viewer') || [], (mg996rModel, index) => ({
+                    model: mg996rModel,
+                    node: document.getElementById('servo-mg996r'),
+                    bodyClass: 'servo-mg996r-activo',
+                    specification: 'mg996r',
+                    initialOrbit: '180deg 8deg 75%',
+                    carouselIndex: Number(mg996rModel.id.match(/-(\d+)$/)?.[1] || index + 1) - 1
+                })),
+                ...Array.from(sg90Wrapper?.querySelectorAll('model-viewer') || [], (sg90Model, index) => ({
+                    model: sg90Model,
+                    node: document.getElementById('servos-sg90'),
+                    bodyClass: 'servo-sg90-activo',
+                    specification: 'sg90',
+                    initialOrbit: '180deg 8deg 75%',
+                    carouselIndex: Number(sg90Model.id.match(/-(\d+)$/)?.[1] || index + 1) - 1
+                })),
+                { model: document.getElementById('modelo-pca9685'), node: document.getElementById('modulo-pca9685'), bodyClass: 'pca9685-modelo-activo', specification: 'pca9685', initialOrbit: '180deg 8deg 63.24m', expandedOrbit: '180deg 8deg 78%' },
+                { model: document.getElementById('modelo-lcd'), node: document.getElementById('pantalla-lcd'), bodyClass: 'lcd-modelo-activo', specification: 'lcd', initialOrbit: '205deg 22.5deg 69.77m', expandedOrbit: '205deg 22.5deg 78%' }
+            ].filter((entry) => entry.model && entry.node);
+            let activeComponent = null;
+
+            const initialOrientation = '0deg 0deg -65deg';
+            const initialCameraOrbit = '205deg 22.5deg 65%';
+            const expandedCameraOrbit = window.matchMedia('(max-width: 760px)').matches
+                ? '205deg 22.5deg 78%'
+                : '205deg 22.5deg 65%';
+
+            const restoreInitialView = () => {
+                model.removeAttribute('camera-controls');
+                model.removeAttribute('auto-rotate');
+                model.orientation = initialOrientation;
+                model.cameraTarget = 'auto';
+                model.cameraOrbit = initialCameraOrbit;
+                model.resetTurntableRotation();
+                model.jumpCameraToGoal();
+            };
+
+            const activateModel = () => {
+                if (model.hasAttribute('camera-controls')) return;
+                if (activeComponent) closeComponentModel();
+
+                restoreInitialView();
+                document.body.classList.add('esp32-activo');
+                model.cameraOrbit = expandedCameraOrbit;
+                model.setAttribute('camera-controls', '');
+                model.setAttribute('auto-rotate-delay', '0');
+                model.setAttribute('auto-rotate', '');
+                model.setAttribute('aria-expanded', 'true');
+                model.setAttribute('aria-label', 'Modelo ESP32 girando. Usa el mouse, el tacto o las flechas para interactuar. Toca el fondo del circuito para cerrar.');
+                details.setAttribute('aria-hidden', 'false');
+                details.inert = false;
+            };
+
+            const closeModel = () => {
+                if (!model.hasAttribute('camera-controls')) return;
+
+                document.body.classList.remove('esp32-activo');
+                restoreInitialView();
+                model.setAttribute('aria-expanded', 'false');
+                model.setAttribute('aria-label', 'Modelo ESP32 en posición horizontal. Pulsa Enter o haz clic para iniciar el giro y activar los controles.');
+                details.setAttribute('aria-hidden', 'true');
+                details.inert = true;
+                model.focus();
+            };
+
+            const closeComponentModel = () => {
+                if (!activeComponent) return;
+
+                document.body.classList.remove('componente-modelo-activo', activeComponent.bodyClass);
+                activeComponent.node.classList.remove('componente-modelo-seleccionado');
+                activeComponent.model.removeAttribute('camera-controls');
+                activeComponent.model.removeAttribute('auto-rotate');
+                activeComponent.model.cameraTarget = 'auto';
+                activeComponent.model.cameraOrbit = activeComponent.initialOrbit || '205deg 22.5deg 75%';
+                activeComponent.model.resetTurntableRotation();
+                activeComponent.model.jumpCameraToGoal();
+                activeComponent.model.setAttribute('aria-expanded', 'false');
+                activeComponent.model.setAttribute('aria-label', 'Modelo 3D estático. Pulsa Enter o haz clic para iniciar el giro y activar los controles.');
+                if (activeComponent.specification === 'mg996r' && mg996rSwiper) {
+                    activeComponent.node.querySelectorAll('.servo-mg996r-seleccionado').forEach((slide) => slide.classList.remove('servo-mg996r-seleccionado'));
+                    startMG996RAutoplay();
+                }
+                if (activeComponent.specification === 'sg90' && sg90Swiper) {
+                    activeComponent.node.querySelectorAll('.servo-sg90-seleccionado').forEach((slide) => slide.classList.remove('servo-sg90-seleccionado'));
+                    sg90Swiper.autoplay.start();
+                }
+                if (activeComponent.specification === 'mg996r') startMG996RAutoplay();
+                details.setAttribute('aria-hidden', 'true');
+                details.inert = true;
+                activeComponent.model.focus();
+                activeComponent = null;
+            };
+
+            const activateComponentModel = (entry) => {
+                if (entry.model.hasAttribute('camera-controls')) return;
+                if (model.hasAttribute('camera-controls')) closeModel();
+                if (activeComponent) closeComponentModel();
+
+                activeComponent = entry;
+                if (entry.specification === 'mg996r' && mg996rSwiper) {
+                    stopMG996RAutoplay();
+                    mg996rSwiper.setTransition(0);
+                    mg996rSwiper.slideTo(entry.carouselIndex, 0);
+                    mg996rSwiper.updateSlidesClasses();
+                    entry.model.closest('.servo-mg996r-slide')?.classList.add('servo-mg996r-seleccionado');
+                }
+                if (entry.specification === 'sg90' && sg90Swiper) {
+                    sg90Swiper.autoplay.stop();
+                    sg90Swiper.setTransition(0);
+                    sg90Swiper.slideToLoop(entry.carouselIndex, 0);
+                    sg90Swiper.updateSlidesClasses();
+                    entry.model.closest('.servo-sg90-slide')?.classList.add('servo-sg90-seleccionado');
+                }
+                document.body.classList.add('componente-modelo-activo', entry.bodyClass);
+                entry.node.classList.add('componente-modelo-seleccionado');
+                entry.model.cameraTarget = 'auto';
+                entry.model.cameraOrbit = entry.expandedOrbit || '205deg 22.5deg 100%';
+                entry.model.setAttribute('camera-controls', '');
+                entry.model.setAttribute('auto-rotate-delay', '0');
+                entry.model.setAttribute('rotation-per-second', '30deg');
+                entry.model.setAttribute('auto-rotate', '');
+                entry.model.setAttribute('aria-expanded', 'true');
+                entry.model.setAttribute('aria-label', 'Modelo 3D girando. Usa el mouse o el tacto para interactuar. Toca el fondo para cerrar.');
+                details.querySelectorAll('[data-servo-especificacion]').forEach((card) => {
+                    card.toggleAttribute('data-especificacion-activa', card.getAttribute('data-servo-especificacion') === entry.specification);
+                });
+                details.setAttribute('aria-hidden', 'false');
+                details.inert = false;
+            };
+
+            model.addEventListener('click', activateModel);
+            model.addEventListener('keydown', (event) => {
+                if (!model.hasAttribute('camera-controls') && (event.key === 'Enter' || event.key === ' ')) {
+                    event.preventDefault();
+                    activateModel();
+                }
+            });
+            const nodesWithKeyboardHandlers = new Set();
+            componentModels.forEach((entry) => {
+                entry.model.setAttribute('aria-expanded', 'false');
+                entry.model.addEventListener('click', () => activateComponentModel(entry));
+                entry.model.addEventListener('keydown', (event) => {
+                    if (!entry.model.hasAttribute('camera-controls') && (event.key === 'Enter' || event.key === ' ')) {
+                        event.preventDefault();
+                        const selectedModel = entry.specification === 'mg996r' && mg996rSwiper
+                            ? componentModels.find((candidate) => candidate.specification === 'mg996r' && candidate.carouselIndex === mg996rSwiper.activeIndex)
+                            : entry.specification === 'sg90' && sg90Swiper
+                                ? componentModels.find((candidate) => candidate.specification === 'sg90' && candidate.carouselIndex === sg90Swiper.realIndex)
+                                : entry;
+                        activateComponentModel(selectedModel || entry);
+                    }
+                });
+                if (!nodesWithKeyboardHandlers.has(entry.node)) {
+                    nodesWithKeyboardHandlers.add(entry.node);
+                    entry.node.addEventListener('keydown', (event) => {
+                        if (event.target === entry.node && (event.key === 'Enter' || event.key === ' ')) {
+                            event.preventDefault();
+                            const selectedSG90 = entry.specification === 'sg90' && sg90Swiper
+                                ? componentModels.find((candidate) => candidate.specification === 'sg90' && candidate.carouselIndex === sg90Swiper.activeIndex)
+                                : entry;
+                            activateComponentModel(selectedSG90 || entry);
+                        }
+                    });
+                }
+            });
+            circuitCanvas.addEventListener('click', (event) => {
+                if (!(event.target instanceof Element)) return;
+                if (event.target.closest('#modelo-esp32, .componente-modelo-3d, .esp32-especificacion-card')) return;
+                closeModel();
+                closeComponentModel();
+            });
+            document.addEventListener('keydown', (event) => {
+                if (event.key === 'Escape') {
+                    closeModel();
+                    closeComponentModel();
+                }
+            });
+        })();
+    </script>
+</body>
+</html>
