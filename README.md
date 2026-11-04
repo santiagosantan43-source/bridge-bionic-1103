@@ -49,8 +49,9 @@ reglas de Firebase correspondientes.
 
 `index.html` ofrece dos pestañas para documentos que aún no están en el
 proyecto. Mientras tanto, cada pestaña muestra un aviso en lugar de intentar
-cargar un archivo inexistente. Agrega los documentos originales a la raíz para
-consultar su contenido:
+cargar un archivo inexistente. Cuando tengas los documentos originales,
+agrégalos a la raíz y vuelve a enlazar las pestañas para mostrar su contenido.
+No se sustituyeron por `aplicacion.pdf`, porque es un documento distinto:
 
 - `generalidades del proyecto.pdf`
 - `estudio de mercados.pdf`
