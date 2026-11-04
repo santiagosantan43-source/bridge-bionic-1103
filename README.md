@@ -7,14 +7,17 @@ como página principal.
 ## Páginas
 
 - Inicio: `index.html`
-- Dashboard de costos: `Dashboard_Hoja_de_Costo/index%20(3).html`
-- Dashboard alternativo: `Dashboard_Hoja_de_Costo/index_equilibrio.html`
-- Punto de equilibrio: `Dashboard_Hoja_de_Costo/punto-de-equilibrio.html`
+- Dashboard financiero integrado (costos y punto de equilibrio):
+  `Dashboard_Hoja_de_Costo/index%20(3).html`
+- Las rutas anteriores `index_equilibrio.html` y `punto-de-equilibrio.html`
+  redirigen a las secciones correspondientes del dashboard integrado.
 
-La página principal ya enlaza al dashboard de costos; desde allí se puede abrir
-el punto de equilibrio. Los recursos gráficos, modelos 3D, videos y fotos deben
-conservar sus carpetas y nombres actuales: las páginas los referencian mediante
-rutas relativas y GitHub Pages distingue mayúsculas y minúsculas.
+La página principal ya enlaza al dashboard financiero integrado. Sus valores
+base de costos y equilibrio corresponden a la planilla proporcionada; el
+simulador permite cambiar el precio y las unidades sin modificar el archivo
+original. Los recursos gráficos, modelos 3D, videos y fotos deben conservar sus
+carpetas y nombres actuales: las páginas los referencian mediante rutas
+relativas y GitHub Pages distingue mayúsculas y minúsculas.
 
 ## Publicar con GitHub Pages
 
@@ -44,9 +47,10 @@ reglas de Firebase correspondientes.
 
 ## Archivos pendientes para una publicación completa
 
-`index.html` incorpora dos documentos en ventanas informativas, pero estos
-archivos no están en el proyecto, por lo que esas ventanas no mostrarán su
-contenido hasta que agregues los documentos originales a la raíz:
+`index.html` ofrece dos pestañas para documentos que aún no están en el
+proyecto. Mientras tanto, cada pestaña muestra un aviso en lugar de intentar
+cargar un archivo inexistente. Agrega los documentos originales a la raíz para
+consultar su contenido:
 
 - `generalidades del proyecto.pdf`
 - `estudio de mercados.pdf`

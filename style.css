@@ -3313,6 +3313,25 @@ body.servo-sg90-activo #diagrama-interactivo #servos-sg90 .servo-sg90-slide.serv
     border-bottom: 1px solid rgba(131, 80, 196, 0.25);
 }
 
+.dashboard-view-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    background: #17171d;
+}
+
+.dashboard-view-overlay[hidden] {
+    display: none;
+}
+
+.dashboard-view-frame {
+    display: block;
+    width: 100%;
+    height: 100%;
+    border: 0;
+    background: #17171d;
+}
+
 #acceso-dashboard .dash-layout {
     display: grid;
     width: min(100%, 1500px);

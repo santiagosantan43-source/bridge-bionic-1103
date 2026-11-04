@@ -115,10 +115,10 @@
         <ul id="primaryNavigation" class="hidden md:flex gap-6 text-sm tracking-[0.25em] uppercase font-bold text-paleSky items-center">
             <li><a href="#inicio" class="nav-link hover:text-deepLilac transition-all duration-300 hover:scale-110">Inicio</a></li>
             <li><a href="#analisis" class="nav-link hover:text-deepLilac transition-all duration-300 hover:scale-110">Análisis</a></li>
+            <li><a href="#acceso-dashboard" class="nav-link hover:text-deepLilac transition-all duration-300 hover:scale-110">Dashboard</a></li>
             <li><a href="#aplicacion" class="nav-link hover:text-deepLilac transition-all duration-300 hover:scale-110">Aplicación</a></li>
             <li><a href="#reconocer-letra" class="nav-link hover:text-deepLilac transition-all duration-300 hover:scale-110">IA LSC</a></li>
             <li><a href="#diagrama-interactivo" class="nav-link hover:text-deepLilac transition-all duration-300 hover:scale-110">Circuito</a></li>
-            <li><a href="#acceso-dashboard" class="nav-link hover:text-deepLilac transition-all duration-300 hover:scale-110">Dashboard</a></li>
             <li><a href="#bitacora-viaje" class="nav-link hover:text-deepLilac transition-all duration-300 hover:scale-110">Bitácora</a></li>
             <li><button onclick="openLoginModal()" class="px-4 py-2 bg-deepLilac text-shadowGrey font-bold rounded-lg hover:bg-opacity-90 transition-all duration-300 hover:scale-105">Ingreso</button></li>
             <li><button id="logoutButton" type="button" onclick="window.firebaseLogout()" class="hidden px-4 py-2 bg-deepLilac text-shadowGrey font-bold rounded-lg hover:bg-opacity-90 transition-all duration-300 hover:scale-105">Cerrar sesión</button></li>
@@ -228,6 +228,30 @@
             </div>
         </div>
     </section>
+
+    <section id="acceso-dashboard" aria-label="Acceso al dashboard financiero">
+        <div class="dash-layout">
+            <div class="dash-titulo-container">
+                <h2>DASHBOARD</h2>
+                <h3>DE BRIDGE BIONICS</h3>
+            </div>
+            <div class="dash-textos-flotantes" aria-label="Análisis financiero y control operativo">
+                <p class="dash-texto-uno">Análisis financiero y operativo en tiempo real.</p>
+                <p class="dash-texto-dos">Control de costos, materiales y punto de equilibrio.</p>
+            </div>
+            <div class="dash-boton-container">
+                <a class="dash-boton" href="./Dashboard_Hoja_de_Costo/index%20(3).html" aria-label="Abrir dashboard financiero">
+                    <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M4 12h15M13 5l7 7-7 7"></path>
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <div id="dashboardView" class="dashboard-view-overlay" role="dialog" aria-modal="true" aria-label="Dashboard financiero" aria-hidden="true" hidden>
+        <iframe id="dashboardFrame" class="dashboard-view-frame" title="Dashboard financiero de Bridge Bionics" data-src="./Dashboard_Hoja_de_Costo/index%20(3).html"></iframe>
+    </div>
 
     <section id="aplicacion" class="py-28 border-b border-deepLilac/20 overflow-hidden bg-shadowGrey">
         <div class="max-w-5xl mx-auto text-center mb-16 px-8">
@@ -663,26 +687,6 @@
         </div>
     </section>
 
-    <section id="acceso-dashboard" aria-label="Acceso al dashboard financiero">
-        <div class="dash-layout">
-            <div class="dash-titulo-container">
-                <h2>DASHBOARD</h2>
-                <h3>DE BRIDGE BIONICS</h3>
-            </div>
-            <div class="dash-textos-flotantes" aria-label="Análisis financiero y control operativo">
-                <p class="dash-texto-uno">Análisis financiero y operativo en tiempo real.</p>
-                <p class="dash-texto-dos">Control de costos, materiales y punto de equilibrio.</p>
-            </div>
-            <div class="dash-boton-container">
-                <a class="dash-boton" href="./Dashboard_Hoja_de_Costo/index%20(3).html" aria-label="Abrir dashboard financiero">
-                    <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M4 12h15M13 5l7 7-7 7"></path>
-                    </svg>
-                </a>
-            </div>
-        </div>
-    </section>
-
     <section id="bitacora-viaje" aria-label="Bitácora de viaje Bridge Bionics">
         <div class="bitacora-layout">
             <div class="contenedor-titulo-bitacora">
@@ -859,20 +863,28 @@
                 </button>
 
                 <div class="flex gap-4 mb-8 border-b border-deepLilac/20 p-8">
-                    <button onclick="switchTab('generalidades')" class="tab-btn active text-xs tracking-[0.2em] uppercase font-space-grotesk font-bold pb-2 border-b-2 border-deepLilac text-paleSky">
-                        
+                    <button onclick="switchTab('generalidades', this)" class="tab-btn active text-xs tracking-[0.2em] uppercase font-space-grotesk font-bold pb-2 border-b-2 border-deepLilac text-paleSky">
+                        Generalidades del proyecto
                     </button>
-                    <button onclick="switchTab('mercados')" class="tab-btn text-xs tracking-[0.2em] uppercase font-space-grotesk font-bold pb-2 text-dustyDenim hover:text-paleSky">
-                        
+                    <button onclick="switchTab('mercados', this)" class="tab-btn text-xs tracking-[0.2em] uppercase font-space-grotesk font-bold pb-2 text-dustyDenim hover:text-paleSky">
+                        Estudio de mercados
                     </button>
                 </div>
 
                 <div class="p-8">
                     <div id="tab-generalidades" class="tab-content">
-                        <iframe src="generalidades del proyecto.pdf" class="w-full h-[600px] border border-deepLilac/20 rounded"></iframe>
+                        <div class="flex min-h-[300px] flex-col items-center justify-center rounded border border-deepLilac/20 p-8 text-center" role="status">
+                            <h3 class="text-xl font-bold text-paleSky">Documento pendiente</h3>
+                            <p class="mt-3 text-sm text-dustyDenim">El archivo <code>generalidades del proyecto.pdf</code> todavía no está disponible en el sitio.</p>
+                            <p class="mt-2 text-sm text-dustyDenim">Agrega el documento original a la raíz del proyecto para consultarlo aquí.</p>
+                        </div>
                     </div>
                     <div id="tab-mercados" class="tab-content hidden">
-                        <iframe src="estudio de mercados.pdf" class="w-full h-[600px] border border-deepLilac/20 rounded"></iframe>
+                        <div class="flex min-h-[300px] flex-col items-center justify-center rounded border border-deepLilac/20 p-8 text-center" role="status">
+                            <h3 class="text-xl font-bold text-paleSky">Documento pendiente</h3>
+                            <p class="mt-3 text-sm text-dustyDenim">El archivo <code>estudio de mercados.pdf</code> todavía no está disponible en el sitio.</p>
+                            <p class="mt-2 text-sm text-dustyDenim">Agrega el documento original a la raíz del proyecto para consultarlo aquí.</p>
+                        </div>
                     </div>
                 </div>
             </div>

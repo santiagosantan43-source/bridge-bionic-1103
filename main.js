@@ -15,6 +15,43 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
+    const dashboardEntry = dashboardSection?.querySelector('.dash-boton');
+    const dashboardView = document.getElementById('dashboardView');
+    const dashboardFrame = document.getElementById('dashboardFrame');
+    if (dashboardEntry && dashboardView && dashboardFrame) {
+        let dashboardReturnFocus = null;
+        let previousBodyOverflow = '';
+
+        const closeDashboardView = () => {
+            if (dashboardView.hidden) return;
+            dashboardView.hidden = true;
+            dashboardView.setAttribute('aria-hidden', 'true');
+            document.body.style.overflow = previousBodyOverflow;
+            dashboardReturnFocus?.focus();
+            dashboardReturnFocus = null;
+        };
+
+        dashboardEntry.addEventListener('click', (event) => {
+            event.preventDefault();
+            dashboardReturnFocus = dashboardEntry;
+            previousBodyOverflow = document.body.style.overflow;
+            dashboardView.hidden = false;
+            dashboardView.setAttribute('aria-hidden', 'false');
+            document.body.style.overflow = 'hidden';
+            if (!dashboardFrame.hasAttribute('src')) {
+                dashboardFrame.src = dashboardFrame.dataset.src;
+            }
+            dashboardFrame.focus();
+        });
+
+        window.addEventListener('message', (event) => {
+            const sameOrigin = event.origin === window.location.origin
+                || (window.location.protocol === 'file:' && event.origin === 'null');
+            if (!sameOrigin || event.source !== dashboardFrame.contentWindow) return;
+            if (event.data?.type === 'bridge-bionics:close-dashboard') closeDashboardView();
+        });
+    }
+
     const applicationSection = document.getElementById('aplicacion');
     if (applicationSection) {
         if ('IntersectionObserver' in window) {
@@ -512,7 +549,7 @@ document.addEventListener("DOMContentLoaded", () => {
         document.getElementById('tabPanel').classList.add('hidden');
     };
 
-    window.switchTab = function(tabName) {
+    window.switchTab = function(tabName, tabButton) {
         
         document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
         document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active', 'border-b-2', 'border-deepLilac'));
@@ -522,8 +559,8 @@ document.addEventListener("DOMContentLoaded", () => {
         if (tabEl) tabEl.classList.remove('hidden');
         
         
-        if (event && event.target) {
-            event.target.classList.add('active', 'border-b-2', 'border-deepLilac');
+        if (tabButton instanceof HTMLElement) {
+            tabButton.classList.add('active', 'border-b-2', 'border-deepLilac');
         }
     };
 
